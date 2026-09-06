@@ -17,3 +17,4 @@ test('orangeHrm dashboardPage Layout Validation', async ({ page }) => {
     await dashboardPage.myActionsWidgets();
     await dashboardPage.logoutDashboard();
 });
+

@@ -44,5 +44,13 @@ export default defineConfig({
       name: 'Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
+      {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+     {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] }, // Adds Safari / WebKit support
+    },
   ],
 });
