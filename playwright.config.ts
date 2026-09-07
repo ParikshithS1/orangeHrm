@@ -42,7 +42,7 @@ export default defineConfig({
     /* Strictly using official Google Chrome branded channel as the default project */
     {
       name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+      use: { ...devices['Desktop Chrome'] },
     },
       {
       name: 'firefox',

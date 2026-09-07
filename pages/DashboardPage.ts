@@ -11,7 +11,6 @@ export class DashboardPage {
     timeOutNote: Locator;
     timeSheetOut: Locator;
     dashBoardSlider: Locator
-
     myActions: Locator;
     myActionsButtonReview: Locator;
     profileDropdown: Locator;

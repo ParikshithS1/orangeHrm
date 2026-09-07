@@ -35,8 +35,7 @@ export class LoginPage {
         await this.usernameInput.fill('Admin');
         await this.passwordInput.fill('admin123');
         await this.submitButton.click();
-
-        // Confirm login actually succeeded before handing control back
+        await this.page.waitForTimeout(3000);
         await expect(this.verifyDashboard).toBeVisible();
    
    
