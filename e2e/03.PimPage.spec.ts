@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/loginPage'; // match exact file casing on disk
+import { LoginPage } from '../pages/loginPage';
 import { PimPage } from '../pages/PimPage';
 
 test.beforeEach(async ({ page }) => {

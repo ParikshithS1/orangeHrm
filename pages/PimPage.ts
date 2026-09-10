@@ -53,7 +53,6 @@ export class PimPage{
         await this.PimSlideBar.click();
         await this.addNewEmployeeIcon.click();
          const fileInput = this.page.locator("input[type='file']");
-        
         // Generates an absolute path dynamically from the root folder without needing external libraries
         await fileInput.setInputFiles('profile.jpeg');        
         await this.employeeFirstName.click();
