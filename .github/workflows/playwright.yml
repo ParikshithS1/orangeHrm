@@ -30,11 +30,9 @@ jobs:
     - name: Execute Playwright Automation Tests
       run: npx playwright test
       env:
-        # If your application uses environment credentials, inject them here safely
         BASE_URL: https://orangehrmlive.com
 
     - name: Upload Test Execution Reports
-      html-report:
       if: always()
       uses: actions/upload-artifact@v4
       with:
