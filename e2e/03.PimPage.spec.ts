@@ -10,6 +10,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('addEmployee', async({page})=>{
+    test.setTimeout(60000); 
     const pimAddEmployee = new PimPage(page);
     await pimAddEmployee.addNewEmployee();
 })

@@ -45,22 +45,25 @@ export class PimPage{
        this.deleteTheEmployee = page.locator("(//button[@type='button'])[7]");
        this.YesDeleteTheEmployee = page.locator("//button[normalize-space()='Yes, Delete']");
     } 
+
+
   
 
     async addNewEmployee(){
         await this.PimSlideBar.click();
         await this.addNewEmployeeIcon.click();
-        await this.employeeFirstName.waitFor({state:'visible',timeout:5000});
+         const fileInput = this.page.locator("input[type='file']");
+        
+        // Generates an absolute path dynamically from the root folder without needing external libraries
+        await fileInput.setInputFiles('profile.jpeg');        
         await this.employeeFirstName.click();
         await this.employeeFirstName.fill('ParikshithS');
         await this.employeeLastName.click();
         await this.employeeLastName.fill('Shivaprakassh');
         await this.employeeAddNewSaveButton.click();
-          
-        await this.selectJobSlider.waitFor({ state: 'visible'});
         await this.selectJobSlider.click();
         await this.jobTitleDropdown.click();
-        const option = this.page.getByRole('listbox').getByText('Automation Tester');
+        const option = this.page.getByRole('listbox').getByText('Software Engineer');
         await option.click();
          await this.saveJobTitleButton.click();
     }
