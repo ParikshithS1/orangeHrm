@@ -6,11 +6,8 @@ test.beforeEach(async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.searchAndNavigate();
     await loginPage.loginToApplication();
-
-    // Explicit gate: don't let any test start until dashboard is confirmed loaded
-    await expect(loginPage.verifyDashboard).toBeVisible({ timeout: 10000 });
+    await expect(loginPage.verifyDashboard).toBeVisible();
 });
-
 
 test('addEmployee', async({page})=>{
     const pimAddEmployee = new PimPage(page);
