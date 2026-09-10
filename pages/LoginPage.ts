@@ -1,7 +1,6 @@
-// Step 1: Import the essential tools we need from Playwright
+// pages/LoginPage.ts
 import { Page, Locator, expect } from '@playwright/test';
 
-// Step 2: Define the page object blueprint
 export class LoginPage {
     page: Page;
     orangeHrmLogo: Locator;
@@ -10,33 +9,31 @@ export class LoginPage {
     submitButton: Locator;
     verifyDashboard: Locator;
 
-    // Step 3: The constructor maps out where the elements live on the webpage
     constructor(page: Page) {
         this.page = page;
-        this.orangeHrmLogo = page.locator("//img[@alt='company-branding']");
+        // Try alternative locators - use role-based or more flexible selectors
+        this.orangeHrmLogo = page.locator('img[alt*="branding"]').first(); // More flexible alt attribute matching
         this.usernameInput = page.locator('input[name="username"]');
         this.passwordInput = page.locator('input[name="password"]');
         this.submitButton = page.locator('button[type="submit"]');
         this.verifyDashboard = page.locator("//h6[text()='Dashboard']");
     }
 
-    // Step 4: Action methods
-
     async searchAndNavigate() {
         await this.page.goto('/');
     }
 
     async verifyLogoPresent() {
-        await expect(this.orangeHrmLogo).toBeVisible();
+        // Add explicit wait with longer timeout for page load
+        await this.page.waitForLoadState('networkidle');
+        await expect(this.orangeHrmLogo).toBeVisible({ timeout: 10000 });
     }
 
     async loginToApplication() {
-        // already auto-wait for the element to be actionable
         await this.usernameInput.fill('Admin');
         await this.passwordInput.fill('admin123');
         await this.submitButton.click();
-        await expect(this.verifyDashboard).toBeVisible();
-   
-   
+        await this.page.waitForLoadState('networkidle');
+        await expect(this.verifyDashboard).toBeVisible({ timeout: 10000 });
     }
 }
