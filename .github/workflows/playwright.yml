@@ -1,41 +1,41 @@
-name: Playwright Regression Tests
-
+name: Playwright E2E Tests
 on:
   push:
-    branches: [ main, feature/orangehrm-automation ]
+    # 🎯 Configured strictly to trigger only on your active branch
+    branches: [ "feature/orangehrm-automation" ]
   pull_request:
-    branches: [ main ]
+    # Triggers tests when opening a pull request aimed at your branch
+    branches: [ "feature/orangehrm-automation" ]
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code Repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Setup Node.js Environment
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: lts/*
         cache: 'npm'
 
-    - name: Install Project Dependencies
+    - name: Install dependencies
       run: npm ci
 
-    - name: Install Playwright Browsers & OS Dependencies
+    - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Execute Playwright Automation Tests
+    # 🚀 Spins up your live server automatically via your playwright.config.ts config and executes tests
+    - name: Run Playwright tests
       run: npx playwright test
-      env:
-        BASE_URL: https://orangehrmlive.com
 
-    - name: Upload Test Execution Reports
-      if: always()
+    # 📊 Optional: Saves the test report so you can download it if a test fails
+    - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
+      if: always()
       with:
-        name: playwright-execution-report
+        name: playwright-report
         path: playwright-report/
         retention-days: 30
+ 
