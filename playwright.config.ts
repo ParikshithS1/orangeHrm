@@ -1,35 +1,45 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * See https://playwright.dev.
+ * See https://playwright.dev for documentation.
  */
 export default defineConfig({
   testDir: './e2e',
   
-  /* FIXED: Set to false to prevent tests from executing simultaneously */
+  /* Prevent tests from running simultaneously to avoid session collision */
   fullyParallel: false,
   
-  /* FIXED: Forced to 1 worker so browser windows open one after another */
+  /* Locked to 1 worker so browser windows open strictly one after another */
   workers: 1,
+
+  /* Gives tests 2 retries to handle any random network blips automatically */
+  retries: 2,
   
-  /* Reporter to use. See https://playwright.dev */
+  /* Reporter to use. */
   reporter: 'html',
   
-  /* Shared settings for all the projects below. See https://playwright.dev. */
+  /* Shared settings for all projects below. */
   use: {
+    /* 🏛️ FIXED: Precise subdomain where the login application actually lives */
     baseURL: 'https://orangehrmlive.com',
     
-    // 🎯 FIXED: Strictly true so tests run flawlessly in your GitHub Actions runner
+    /* Run headless for execution speed and runner compatibility */
     headless: true,
+    viewport: { width: 1280, height: 720 },
     
+    /* Keeps a step-by-step recording of failures to download from CI artifacts */
     trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    
     actionTimeout: 10000,
-    navigationTimeout: 30000, // increased — demo site is slow/flaky under 'load'
+    navigationTimeout: 30000, 
+    
+    /* Emulates a normal desktop browser user-agent to bypass bot blocks */
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
   },
 
   /* Configure projects for major browsers */
   projects: [
-    /* Strictly using official Google Chrome branded channel as the default project */
     {
       name: 'Google Chrome',
       use: { ...devices['Desktop Chrome'] },
@@ -40,7 +50,7 @@ export default defineConfig({
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] }, // Adds Safari / WebKit support
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 });

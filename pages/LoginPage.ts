@@ -25,15 +25,16 @@ export class LoginPage {
     }
 
     async verifyLogoPresent() {
-        await this.page.waitForLoadState('networkidle');
         await expect(this.orangeHrmLogo).toBeVisible({ timeout: 15000 });
     }
 
     async loginToApplication() {
+          if (this.page.url() === 'about:blank' || this.page.url() === '') {
+            await this.searchAndNavigate();
+        }
         await this.usernameInput.fill('Admin');
         await this.passwordInput.fill('admin123');
         await this.submitButton.click();
-        await this.page.waitForLoadState('networkidle');
         await expect(this.verifyDashboard).toBeVisible({ timeout: 15000 });
     }
 }
