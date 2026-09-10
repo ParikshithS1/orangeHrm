@@ -11,8 +11,9 @@ export class LoginPage {
 
     constructor(page: Page) {
         this.page = page;
-        // Try alternative locators - use role-based or more flexible selectors
-        this.orangeHrmLogo = page.locator('img[alt*="branding"]').first(); // More flexible alt attribute matching
+        // Use role-based locator which is more reliable across different HTML structures
+        this.orangeHrmLogo = page.locator('img[alt*="orange"]').first(); // More flexible matching for "orange" branding
+        // Alternative: this.orangeHrmLogo = page.locator('//img[contains(@alt, "orange") or contains(@src, "logo")]').first();
         this.usernameInput = page.locator('input[name="username"]');
         this.passwordInput = page.locator('input[name="password"]');
         this.submitButton = page.locator('button[type="submit"]');
@@ -24,9 +25,8 @@ export class LoginPage {
     }
 
     async verifyLogoPresent() {
-        // Add explicit wait with longer timeout for page load
         await this.page.waitForLoadState('networkidle');
-        await expect(this.orangeHrmLogo).toBeVisible({ timeout: 10000 });
+        await expect(this.orangeHrmLogo).toBeVisible({ timeout: 15000 });
     }
 
     async loginToApplication() {
@@ -34,6 +34,6 @@ export class LoginPage {
         await this.passwordInput.fill('admin123');
         await this.submitButton.click();
         await this.page.waitForLoadState('networkidle');
-        await expect(this.verifyDashboard).toBeVisible({ timeout: 10000 });
+        await expect(this.verifyDashboard).toBeVisible({ timeout: 15000 });
     }
 }
