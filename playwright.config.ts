@@ -21,7 +21,7 @@ export default defineConfig({
   /* Shared settings for all projects below. */
   use: {
     /* 🏛️ FIXED: Precise subdomain where the login application actually lives */
-    baseURL: 'https://orangehrmlive.com',
+    baseURL: 'https://opensource-demo.orangehrmlive.com',
     
     /* Run headless for execution speed and runner compatibility */
     headless: true,
