@@ -12,9 +12,7 @@ export class LoginPage {
     constructor(page: Page) {
         this.page = page;
         // Use role-based locator which is more reliable across different HTML structures
-        this.orangeHrmLogo = page.locator('img[alt*="orange"]').first(); // More flexible matching for "orange" branding
-        // Alternative: this.orangeHrmLogo = page.locator('//img[contains(@alt, "orange") or contains(@src, "logo")]').first();
-        this.usernameInput = page.locator('input[name="username"]');
+        this.orangeHrmLogo = page.locator("//img[contains(@alt, 'orange')]").first();        this.usernameInput = page.locator('input[name="username"]');
         this.passwordInput = page.locator('input[name="password"]');
         this.submitButton = page.locator('button[type="submit"]');
         this.verifyDashboard = page.locator("//h6[text()='Dashboard']");
