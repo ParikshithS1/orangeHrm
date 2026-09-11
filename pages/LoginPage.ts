@@ -13,7 +13,7 @@ export class LoginPage {
     // Step 3: The constructor maps out where the elements live on the webpage
     constructor(page: Page) {
         this.page = page;
-        this.orangeHrmLogo = page.locator("//img[@alt='company-branding']");
+        this.orangeHrmLogo = page.locator("img[alt*='orange']").first();
         this.usernameInput = page.locator('input[name="username"]');
         this.passwordInput = page.locator('input[name="password"]');
         this.submitButton = page.locator('button[type="submit"]');
