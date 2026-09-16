@@ -49,33 +49,33 @@ export class PimPage{
 
   
 
-    async addNewEmployee(){
+    async addNewEmployee(firstName: string, lastName: string, jobTitle: string, profilePicPath: string){
         await this.PimSlideBar.click();
         await this.addNewEmployeeIcon.click();
          const fileInput = this.page.locator("input[type='file']");
         // Generates an absolute path dynamically from the root folder without needing external libraries
-        await fileInput.setInputFiles('profile.jpeg');        
+        await fileInput.setInputFiles(profilePicPath);        
         await this.employeeFirstName.click();
-        await this.employeeFirstName.fill('ParikshithS');
+        await this.employeeFirstName.fill(firstName);
         await this.employeeLastName.click();
-        await this.employeeLastName.fill('Shivaprakassh');
+        await this.employeeLastName.fill(lastName);
         await this.employeeAddNewSaveButton.click();
         await this.selectJobSlider.click();
         await this.jobTitleDropdown.click();
-        const option = this.page.getByRole('listbox').getByText('Software Engineer');
+        const option = this.page.getByRole('listbox').getByText(jobTitle);
         await option.click();
          await this.saveJobTitleButton.click();
     }
 
-    async employeeSearch(){
+    async employeeSearch(firstName: string, lastName: string){
         await this.PimSlideBar.click();
         await this.employeeInputName.click();
-        await this.employeeInputName.fill('ParikshithS');
+        await this.employeeInputName.fill(firstName);
         await this.searchButton.click();
       // Dynamically tracks down the target row via Last Name
-    const targetRow = this.tableCard.filter({ hasText: 'Shivaprakassh' });
+    const targetRow = this.tableCard.filter({ hasText: lastName });
     // ADDED .first() to resolve the strict mode violation error
-    const firstNameCell = targetRow.locator('div').getByText('ParikshithS', { exact: true }).first();
+    const firstNameCell = targetRow.locator('div').getByText(firstName, { exact: true }).first();
     // Asserts element visibility safely now that it targets a unique element
     await expect(firstNameCell).toBeVisible();
     }

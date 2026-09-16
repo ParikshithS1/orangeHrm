@@ -1,0 +1,25 @@
+{
+  "validUser": {
+    "username": "Admin",
+    "correctPassword": "admin123"
+  },
+  "invalidUser": {
+    "username": "Admin",
+    "password": "WrongPassword123"
+  },
+  "emptyUsername": {
+    "username": "",
+    "password": "admin123"
+  },
+  "fakeUser": {
+    "username": "FakeUser999",
+    "password": "admin123"
+  },
+"employeeData": {
+    "firstName": "ParikshithS",
+    "lastName": "Shivaprakassh",
+    "jobTitle": "Software Engineer",
+    "profilePicture": "profile.jpeg"
+  }
+
+}

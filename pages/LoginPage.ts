@@ -1,6 +1,7 @@
 // pages/LoginPage.ts
 import { Page, Locator, expect } from '@playwright/test';
 
+
 export class LoginPage {
     page: Page;
     orangeHrmLogo: Locator;
@@ -8,11 +9,12 @@ export class LoginPage {
     passwordInput: Locator;
     submitButton: Locator;
     verifyDashboard: Locator;
-
+ 
     constructor(page: Page) {
         this.page = page;
         // Use role-based locator which is more reliable across different HTML structures
-        this.orangeHrmLogo = page.locator("//img[contains(@alt, 'orange')]").first();        this.usernameInput = page.locator('input[name="username"]');
+        this.orangeHrmLogo = page.locator("//img[@alt='company-branding']");     
+        this.usernameInput = page.locator('input[name="username"]');
         this.passwordInput = page.locator('input[name="password"]');
         this.submitButton = page.locator('button[type="submit"]');
         this.verifyDashboard = page.locator("//h6[text()='Dashboard']");
@@ -26,12 +28,11 @@ export class LoginPage {
         await expect(this.orangeHrmLogo).toBeVisible({ timeout: 15000 });
     }
 
-    async loginToApplication() {
-          if (this.page.url() === 'about:blank' || this.page.url() === '') {
-            await this.searchAndNavigate();
-        }
-        await this.usernameInput.fill('Admin');
-        await this.passwordInput.fill('admin123');
+    async loginToApplication(username: string, correctPassword: string) {
+        await this.searchAndNavigate();
+   
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(correctPassword);
         await this.submitButton.click();
         await expect(this.verifyDashboard).toBeVisible({ timeout: 15000 });
     }

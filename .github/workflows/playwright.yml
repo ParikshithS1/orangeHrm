@@ -26,6 +26,10 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    # 🖼️ ADDED: Dynamically creates the profile photo so the runner can upload it during the PIM test
+    - name: Generate mock profile picture for upload
+      run: echo "mock image data" > profile.jpeg
+
     # 🚀 Spins up your live server automatically via your playwright.config.ts config and executes tests
     - name: Run Playwright tests
       run: npx playwright test
@@ -38,4 +42,3 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
- 

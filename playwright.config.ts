@@ -4,8 +4,12 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev for documentation.
  */
 export default defineConfig({
-  testDir: './e2e',
+  // 🌟 UPDATED: Removed './e2e' restriction so Playwright scans your whole project root
+  testDir: '.',
   
+  // 🌟 ADDED: Explicitly matches any test files ending in .spec.ts in both api/ and e2e/ folders
+  testMatch: ['**/*.spec.ts'],
+
   /* Prevent tests from running simultaneously to avoid session collision */
   fullyParallel: false,
   
@@ -39,18 +43,31 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
+   projects: [
+    // 🖥️ UI Testing Project: Runs ONLY the files inside the e2e folder across multiple browsers
     {
-      name: 'Google Chrome',
+      name: 'UI-Chrome',
+      testDir: './e2e',
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'firefox',
+      name: 'UI-Firefox',
+      testDir: './e2e',
       use: { ...devices['Desktop Firefox'] },
     },
     {
-      name: 'webkit',
+      name: 'UI-Safari',
+      testDir: './e2e',
       use: { ...devices['Desktop Safari'] },
     },
+
+    // 🔌 API Testing Project: Runs ONLY the files inside the api folder with NO browsers
+    {
+      name: 'API-Tests',
+      testDir: './api',
+      use: {
+        // We completely omit the browser devices here so it behaves as a pure backend API client
+      }
+    }
   ],
 });
