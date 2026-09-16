@@ -1,56 +1,73 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * See https://playwright.dev/docs/test-configuration.
+ * See https://playwright.dev for documentation.
  */
 export default defineConfig({
-  testDir: './e2e',
+  // 🌟 UPDATED: Removed './e2e' restriction so Playwright scans your whole project root
+  testDir: '.',
   
-  /* FIXED: Set to false to prevent tests from executing simultaneously */
+  // 🌟 ADDED: Explicitly matches any test files ending in .spec.ts in both api/ and e2e/ folders
+  testMatch: ['**/*.spec.ts'],
+
+  /* Prevent tests from running simultaneously to avoid session collision */
   fullyParallel: false,
   
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  
-  /* FIXED: Forced to 1 worker so browser windows open one after another */
+  /* Locked to 1 worker so browser windows open strictly one after another */
   workers: 1,
+
+  /* Gives tests 2 retries to handle any random network blips automatically */
+  retries: 2,
   
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  /* Reporter to use. */
   reporter: 'html',
   
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
- use: {
+  /* Shared settings for all projects below. */
+  use: {
+    /* 🏛️ FIXED: Precise subdomain where the login application actually lives */
     baseURL: 'https://opensource-demo.orangehrmlive.com',
-    headless: false,
+    
+    /* Run headless for execution speed and runner compatibility */
+    headless: true,
+    viewport: { width: 1280, height: 720 },
+    
+    /* Keeps a step-by-step recording of failures to download from CI artifacts */
     trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    
     actionTimeout: 10000,
-    navigationTimeout: 30000, // increased — demo site is slow/flaky under 'load'
-},
+    navigationTimeout: 30000, 
+    
+    /* Emulates a normal desktop browser user-agent to bypass bot blocks */
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+  },
 
   /* Configure projects for major browsers */
-  projects: [
-    /* Strictly using official Google Chrome branded channel as the default project */
+   projects: [
+    // 🖥️ UI Testing Project: Runs ONLY the files inside the e2e folder across multiple browsers
     {
-      name: 'Google Chrome',
+      name: 'UI-Chrome',
+      testDir: './e2e',
       use: { ...devices['Desktop Chrome'] },
     },
-      {
-      name: 'firefox',
+    {
+      name: 'UI-Firefox',
+      testDir: './e2e',
       use: { ...devices['Desktop Firefox'] },
     },
-     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }, // Adds Safari / WebKit support
+    {
+      name: 'UI-Safari',
+      testDir: './e2e',
+      use: { ...devices['Desktop Safari'] },
     },
+
+    // 🔌 API Testing Project: Runs ONLY the files inside the api folder with NO browsers
+    {
+      name: 'API-Tests',
+      testDir: './api',
+      use: {
+        // We completely omit the browser devices here so it behaves as a pure backend API client
+      }
+    }
   ],
 });

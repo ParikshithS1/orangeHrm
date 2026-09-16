@@ -8,9 +8,12 @@ export class PimPage{
     employeeFirstName: Locator;
     employeeLastName: Locator;
     employeeAddNewSaveButton: Locator;
+    selectJobSlider: Locator;
+    jobTitleDropdown: Locator;
+    saveJobTitleButton: Locator;
     employeeInputName: Locator;
-    employeeID: Locator;
     searchButton: Locator;
+    tableCard: Locator; 
     verifyIDNumber: Locator;
     editPencilIcon: Locator;
     editEmployeeName: Locator;
@@ -28,9 +31,12 @@ export class PimPage{
         this.employeeFirstName = page.locator("//input[@name ='firstName']");
         this.employeeLastName= page.locator("//input[@name ='lastName']");
         this.employeeAddNewSaveButton = page.locator("//button[@type='submit']");
+        this.selectJobSlider = page.locator("//a[contains(text(),'Job')]") ;
+        this.jobTitleDropdown = page.locator("(//div[contains(text(),'-- Select --')])[1]");
+        this.saveJobTitleButton = page.locator("//button[@type='submit']");
         this.employeeInputName = page.locator("(//input[@placeholder='Type for hints...'])[1]");
-        this.employeeID = page.locator("//label[text()='Employee Id']/ancestor::div[contains(@class,'oxd-input-group')]//input");
         this.searchButton = page.locator("//button[@type='submit']");
+        this.tableCard = page.locator('.oxd-table-card');
         this.verifyIDNumber = page.locator("//div[text()='Id']/following-sibling::div[@class='data']");
         this.editPencilIcon = page.locator("(//button[@type='button'])[6]");
         this.editEmployeeName = page.locator("//input[@placeholder='First Name']");
@@ -41,28 +47,37 @@ export class PimPage{
     } 
 
 
-    async addNewEmployee(){
-        await this.PimSlideBar.click();
-        await this.page.waitForTimeout(3000);
-        await this.addNewEmployeeIcon.click();
-        await this.employeeFirstName.click();
-        await this.employeeFirstName.fill('Parikshith');
-        await this.employeeLastName.click();
-        await this.employeeLastName.fill('Shivaprakassh');
-        await this.employeeAddNewSaveButton.click();
-        
+  
 
+    async addNewEmployee(firstName: string, lastName: string, jobTitle: string, profilePicPath: string){
+        await this.PimSlideBar.click();
+        await this.addNewEmployeeIcon.click();
+         const fileInput = this.page.locator("input[type='file']");
+        // Generates an absolute path dynamically from the root folder without needing external libraries
+        await fileInput.setInputFiles(profilePicPath);        
+        await this.employeeFirstName.click();
+        await this.employeeFirstName.fill(firstName);
+        await this.employeeLastName.click();
+        await this.employeeLastName.fill(lastName);
+        await this.employeeAddNewSaveButton.click();
+        await this.selectJobSlider.click();
+        await this.jobTitleDropdown.click();
+        const option = this.page.getByRole('listbox').getByText(jobTitle);
+        await option.click();
+         await this.saveJobTitleButton.click();
     }
 
-    async employeeSearch(){
+    async employeeSearch(firstName: string, lastName: string){
         await this.PimSlideBar.click();
         await this.employeeInputName.click();
-        await this.employeeInputName.clear();
-        await this.employeeInputName.fill('Parikshith');
-        await this.employeeID.click();
-        await this.employeeID.fill('0564');
+        await this.employeeInputName.fill(firstName);
         await this.searchButton.click();
-        await expect(this.employeeID).toBeVisible();
+      // Dynamically tracks down the target row via Last Name
+    const targetRow = this.tableCard.filter({ hasText: lastName });
+    // ADDED .first() to resolve the strict mode violation error
+    const firstNameCell = targetRow.locator('div').getByText(firstName, { exact: true }).first();
+    // Asserts element visibility safely now that it targets a unique element
+    await expect(firstNameCell).toBeVisible();
     }
 
     async deleteEmployee(){
