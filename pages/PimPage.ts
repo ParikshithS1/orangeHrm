@@ -19,7 +19,6 @@ export class PimPage{
     editEmployeeName: Locator;
     saveButton: Locator;
     verifyEditedName: Locator;
-    deleteTheEmployee: Locator;
     YesDeleteTheEmployee: Locator;
 
 
@@ -42,7 +41,7 @@ export class PimPage{
         this.editEmployeeName = page.locator("//input[@placeholder='First Name']");
         this.saveButton = page.locator("(//button[@type='submit'])[1]"); 
        this.verifyEditedName = page.locator("body > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)");
-       this.deleteTheEmployee = page.locator("(//button[@type='button'])[7]");
+      
        this.YesDeleteTheEmployee = page.locator("//button[normalize-space()='Yes, Delete']");
     } 
 
@@ -80,12 +79,27 @@ export class PimPage{
     await expect(firstNameCell).toBeVisible();
     }
 
-    async deleteEmployee(){
-        await this.PimSlideBar.click();
-        await this.deleteTheEmployee.click();
-        await this.YesDeleteTheEmployee.click();
-        
-    }
+   // pages/PimPage.ts
+
+async deleteEmployee(lastName: string) {
+    // 1. Navigate to PIM module
+    await this.PimSlideBar.click();
+    
+    // 2. Clear out the 108 records by searching for the target employee first
+    await this.employeeInputName.click();
+    await this.employeeInputName.fill(lastName);
+    await this.searchButton.click();
+    
+    // 3. Dynamically isolate the exact single row card left on the screen
+    const targetRow = this.tableCard.filter({ hasText: lastName });
+    
+    // 4. Locate the trash can icon inside that isolated row and click it safely
+    const rowDeleteButton = targetRow.locator('button').nth(1); 
+    await rowDeleteButton.click();
+    
+    // 5. Confirm the action step
+    await this.YesDeleteTheEmployee.click();
+}
 
 }
 

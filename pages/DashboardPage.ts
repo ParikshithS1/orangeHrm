@@ -15,6 +15,7 @@ export class DashboardPage {
     myActionsButtonReview: Locator;
     profileDropdown: Locator;
     dashBoardLogout: Locator;
+    formLoader: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -26,9 +27,10 @@ export class DashboardPage {
         this.timeAtWorkSymbol = page.locator('.orangehrm-attendance-card').getByRole('button');
         this.timeSheetNote = page.locator("(//textarea[@placeholder='Type here'])");
         this.timeSheetIn = page.locator("//button[@type='submit']");
-        this.timeOutNote = page.locator("//textarea[@placeholder='Type here']");
-        this.timeSheetOut = page.locator("//button[@type='submit']");
+        this.timeOutNote = page.getByPlaceholder('Type here');
+        this.timeSheetOut = page.getByRole('button', { name: 'Out' });
         this.dashBoardSlider = page.locator("//span[text()='Dashboard']");
+          this.formLoader = page.locator('.oxd-form-loader');
         this.myActions = this.page.locator("(//div[contains(@class, 'orangehrm-dashboard-widget-name')]/p)[2]");
         this.myActionsButtonReview = page.locator("(//button[@type='button'])[5]");
         this.profileDropdown = page.locator("//i[contains(@class, 'oxd-userdropdown-icon')]");
@@ -36,12 +38,14 @@ export class DashboardPage {
     
     }
 
-    async timeAtWorkWidget() {
+    async timeAtWorkWidget(punchIn: string = '', punchOut: string = '') {
         await expect(this.timeAtWork).toBeVisible();
         await this.timeAtWorkSymbol.click();
-        await this.timeSheetNote.fill('punchIn');
+           // Ensure the loading screen indicator is fully detached from the DOM structure
+        await this.formLoader.waitFor({ state: 'detached', timeout: 5000 }).catch(() => {});
+        await this.timeSheetNote.fill(punchIn);
         await this.timeSheetIn.click();
-        await this.timeOutNote.fill('punchOut');
+        await this.timeOutNote.fill(punchOut);
         await this.timeSheetOut.click();
         await this.dashBoardSlider.click();
  
@@ -51,6 +55,8 @@ export class DashboardPage {
         await this.myActionsButtonReview.click();
 
     }
+
+    
 
     async logoutDashboard(){
         await this.profileDropdown.click();

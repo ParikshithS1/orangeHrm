@@ -20,6 +20,11 @@
     "lastName": "Shivaprakassh",
     "jobTitle": "Software Engineer",
     "profilePicture": "profile.jpeg"
-  }
+  },
+
+ "timeSheetNote" :{
+    "punchInNotes": "punchIn",
+    "punchOutNotes": "punchOut"
+ }
 
 }

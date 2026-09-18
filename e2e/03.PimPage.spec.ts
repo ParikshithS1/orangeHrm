@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage } from '../pages/loginPage';
 import { PimPage } from '../pages/PimPage';
 // 1. Import your test data so we can feed it to the login method
 import loginDataRaw from '../test-data/login-data.json';
@@ -18,9 +18,12 @@ test.beforeEach(async ({ page }) => {
     await expect(loginPage.verifyDashboard).toBeVisible();
 });
 
+test.describe('OrangeHRM Pim Module', { tag :'@smoke'}, () => {
+
 test('addEmployee', async({page})=>{
     test.setTimeout(60000); 
     const pimAddEmployee = new PimPage(page);
+    
     await pimAddEmployee.addNewEmployee(
         loginData.employeeData.firstName,
         loginData.employeeData.lastName,
@@ -37,7 +40,9 @@ test('employeeSearch', async ({ page }) => {
     ); 
 });
 
+
 test('deleteEmployee', async ({page}) => {
     const pimPageDeleteEmployee = new PimPage(page);
-    await pimPageDeleteEmployee.deleteEmployee();
+    await pimPageDeleteEmployee.deleteEmployee(loginData.employeeData.lastName);
+});
 });

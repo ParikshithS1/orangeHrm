@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage } from '../pages/loginPage';
 import { DashboardPage } from '../pages/DashboardPage';
 // 1. Import your JSON test data
 import loginDataRaw from '../test-data/login-data.json';
@@ -21,7 +21,10 @@ test.beforeEach(async ({ page }) => {
 
 test('orangeHrm dashboardPage Layout Validation', async ({ page }) => {
     const dashboardPage = new DashboardPage(page);
-    await dashboardPage.timeAtWorkWidget();
+    await dashboardPage.timeAtWorkWidget(
+        loginData.timeSheetNote.punchInNotes,
+        loginData.timeSheetNote.punchOutNotes
+    );
     await dashboardPage.myActionsWidgets();
     await dashboardPage.logoutDashboard();
 });

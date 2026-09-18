@@ -11,7 +11,7 @@ test.describe('OrangeHRM Dashboard Widget API Lifecycle', () => {
         const loginResponse = await request.post('/web/index.php/auth/validate', {
             form: {
                 username: loginData.validUser.username,
-                password: loginData.validUser.password
+                password: loginData.validUser.correctPassword
             },
             maxRedirects: 0
         });

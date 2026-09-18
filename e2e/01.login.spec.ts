@@ -1,6 +1,6 @@
 // e2e/01.login.spec.ts
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage } from '../pages/loginPage';
 import loginDataRaw from '../test-data/login-data.json';
 const loginData = loginDataRaw as any;
 
@@ -19,3 +19,40 @@ test('orangeHrmLoginPage', async ({ page }) => {
     // Explicit test-level assertion
     await expect(loginPage.verifyDashboard).toBeVisible();
 });
+
+// 🔴 ADDING THE NEW TDD TEST BLOCK HERE
+test('Should show error alert on invalid password - TDD Workflow', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.searchAndNavigate();
+    
+    // We execute login using your separate "invalidUser" JSON credentials
+    await loginPage.loginToApplication(
+        loginData.invalidUser.username,
+        loginData.invalidUser.password
+    );
+
+    // 🔴 RED: This method does not exist inside LoginPage.ts yet! 
+    // TypeScript will show a red squiggly line, and running this test will fail immediately.
+    await loginPage.verifyInvalidCredentialsMessage('Invalid credentials');
+});
+
+test('Empty Username', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.searchAndNavigate();
+    
+    // We execute login using your separate "invalidUser" JSON credentials
+    await loginPage.loginToApplication(
+        loginData.emptyUsername.username,
+        loginData.emptyUsername.password
+    );
+
+    // 🔴 RED: This method does not exist inside LoginPage.ts yet! 
+    // TypeScript will show a red squiggly line, and running this test will fail immediately.
+    await loginPage.verifyEmptyUsername('Required');
+});
+
+
+
+

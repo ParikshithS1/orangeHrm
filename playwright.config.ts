@@ -34,7 +34,7 @@ export default defineConfig({
     /* Keeps a step-by-step recording of failures to download from CI artifacts */
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    
+  
     actionTimeout: 10000,
     navigationTimeout: 30000, 
     
