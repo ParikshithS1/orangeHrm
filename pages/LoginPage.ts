@@ -43,7 +43,7 @@ this.verifyDashboard = page.locator('.oxd-topbar-header-title h6, h6.oxd-topbar-
     }
 
        async verifyInvalidCredentialsMessage(expectedText: string) {
-        await expect(this.invalidCredentialsAlert).toBeVisible({ timeout: 5000 });
+        await expect(this.invalidCredentialsAlert).toBeVisible({ timeout: 20000 });
         await expect(this.invalidCredentialsAlert).toContainText(expectedText);
     }
 

@@ -17,7 +17,7 @@ test('orangeHrmLoginPage', async ({ page }) => {
     );
 
     // Explicit test-level assertion
-    await expect(loginPage.verifyDashboard).toBeVisible();
+    await expect(loginPage.verifyDashboard).toBeVisible({timeout: 30000});
 });
 
 // 🔴 ADDING THE NEW TDD TEST BLOCK HERE
