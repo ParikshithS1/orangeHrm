@@ -15,10 +15,10 @@ export class LoginPage {
         
         // Refactored to adhere to Playwright best locator practices
         this.orangeHrmLogo = page.getByAltText('company-branding');
-        this.usernameInput = page.getByPlaceholder('Username');
-        this.passwordInput = page.getByPlaceholder('Password');
-        this.submitButton = page.getByRole('button', { name: 'Login' });
-        this.verifyDashboard = page.getByRole('heading', { name: 'Dashboard' });
+       this.usernameInput = page.locator('input[name="username"]');
+        this.passwordInput = page.locator('input[name="password"]');
+        this.submitButton = page.locator('button[type="submit"]');
+this.verifyDashboard = page.locator('.oxd-topbar-header-title h6, h6.oxd-topbar-header-breadcrumb-module');
         this.invalidCredentialsAlert = page.getByRole('alert');
         this.emptyUsername = page.getByText('Required');
 
