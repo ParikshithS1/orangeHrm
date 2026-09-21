@@ -1,11 +1,11 @@
 // e2e/01.login.spec.ts
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/loginPage';
+import { LoginPage } from '../pages/LoginPage';
 import loginDataRaw from '../test-data/login-data.json';
 const loginData = loginDataRaw as any;
-
+test.use({ storageState: { cookies: [], origins: [] } });
 test('orangeHrmLoginPage', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(page); 
 
     await loginPage.searchAndNavigate();
     await loginPage.verifyLogoPresent();
