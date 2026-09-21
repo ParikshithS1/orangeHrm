@@ -1,11 +1,11 @@
 name: Playwright E2E Tests
 on:
   push:
-    # 🎯 Configured strictly to trigger only on your active branch
-    branches: [ "feature/orangehrm-automation" ]
+    # 🎯 Configured strictly to trigger only on the main branch
+    branches: [ "main" ]
   pull_request:
-    # Triggers tests when opening a pull request aimed at your branch
-    branches: [ "feature/orangehrm-automation" ]
+    # Triggers tests when opening a pull request aimed at the main branch
+    branches: [ "main" ]
 
 jobs:
   test:
@@ -26,15 +26,15 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    # 🖼️ ADDED: Dynamically creates the profile photo so the runner can upload it during the PIM test
+    # 🖼️ Generates a dummy profile picture for upload fields in tests
     - name: Generate mock profile picture for upload
       run: echo "mock image data" > profile.jpeg
 
-    # 🚀 Spins up your live server automatically via your playwright.config.ts config and executes tests
+    # 🚀 Executes tests (and starts any local web server defined in your playwright.config.ts)
     - name: Run Playwright tests
       run: npx playwright test
 
-    # 📊 Optional: Saves the test report so you can download it if a test fails
+    # 📊 Saves the test report so you can download it if a test fails
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
       if: always()
