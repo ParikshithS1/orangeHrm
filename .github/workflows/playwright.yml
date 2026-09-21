@@ -2,10 +2,10 @@ name: Playwright E2E Tests
 on:
   push:
     # 🎯 Configured strictly to trigger only on your active branch
-    branches: [ "feature/orangehrm-automation" ]
+    branches: [ "main, master" ]
   pull_request:
     # Triggers tests when opening a pull request aimed at your branch
-    branches: [ "feature/orangehrm-automation" ]
+    branches: [ "main, master" ]
 
 jobs:
   test:
