@@ -28,8 +28,8 @@ export default defineConfig({
     /* Precise subdomain where the login application actually lives */
     baseURL: 'https://opensource-demo.orangehrmlive.com',
     
-    /* Changed to false so your headed flags work perfectly */
-    headless: false,
+    /* Always headless so it runs on CI (no display). Use --headed locally to watch the browser */
+    headless: true,
     viewport: { width: 1280, height: 720 },
     
     /* Keeps a step-by-step recording of failures to download from CI artifacts */
@@ -60,8 +60,7 @@ export default defineConfig({
       testDir: './e2e',
       use: { 
         ...devices['Desktop Chrome'],
-        channel: 'chrome', 
-        storageState: 'playwright/.auth/user.json' // Injects cookies automatically
+        storageState: STORAGE_STATE // Injects cookies automatically
       },
       dependencies: ['setup'], // Forces Phase 1 to complete successfully first
     },
