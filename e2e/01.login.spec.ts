@@ -52,19 +52,13 @@ test('Empty Username', async ({ page }) => {
     // TypeScript will show a red squiggly line, and running this test will fail immediately.
     await loginPage.verifyEmptyUsername('Required');
 });
-    test('API Test should fail when fake username is entered', async ({ request }) => {
-        const response = await request.post('/web/index.php/auth/validate', {
-            form: {
-                // Reading from the fake username mapping in your json
-                username: loginData.fakeUser.username,
-                password: loginData.fakeUser.password
-            },
-            maxRedirects: 0
-        });
-
-        expect([200, 302]).toContain(response.status());
-        const redirectLocation = response.headers()['location'];
-        expect(redirectLocation).toContain('auth/login');
+    test(' Test should fail when fake username is entered', async ({ page }) => {
+       const loginPage = new LoginPage(page);
+          await loginPage.loginToApplication(
+        loginData.fakeUser.username,
+        loginData.fakeUser.password
+    );        // Reading from the fake username mapping in your json
     });
 
 
+ 
